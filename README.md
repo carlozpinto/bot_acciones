@@ -35,7 +35,8 @@ TELEGRAM_CHAT_ID=tu_chat_id
 
 ## 📊 Vista del dashboard
 
-*Captura de pantalla próximamente*
+
+![Dashboard Preview](dashboard_preview.png)
 
 ## 👤 Autor
 

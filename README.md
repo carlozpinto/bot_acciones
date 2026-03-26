@@ -26,10 +26,10 @@ Dashboard interactivo y bot de Telegram para monitorear mi portafolio de accione
 3. Actívalo: `venv\Scripts\activate`
 4. Instala dependencias: `pip install yfinance pandas plotly streamlit python-telegram-bot python-dotenv`
 5. Crea tu archivo `.env` con tus credenciales:
-```
-```
+```env
 TELEGRAM_TOKEN=tu_token
 TELEGRAM_CHAT_ID=tu_chat_id
+```
 
 6. Corre el dashboard: `streamlit run dashboard.py`
 

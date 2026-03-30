@@ -1,3 +1,4 @@
+# Importamos las librerias
 import streamlit as st
 import yfinance as yf
 import pandas as pd
@@ -6,6 +7,7 @@ import plotly.graph_objects as go
 # Configuración de la página
 st.set_page_config(page_title="Mi Portafolio", page_icon="📈", layout="wide")
 
+# Titulo de pagina dashboard
 st.title("📈 Mi Portafolio de Acciones")
 st.caption("Datos en tiempo real via Yahoo Finance")
 
@@ -17,9 +19,17 @@ st.subheader("Precios actuales")
 col1, col2, col3 = st.columns(3)
 columnas = [col1, col2, col3]
 
+# Ciclo for donde iteramos sobre cada accion
 for i, ticker in enumerate(tickers):
+    
+    # Obtenemos la data de la accion
     accion = yf.Ticker(ticker)
+    
+    # De la data completa solo obtenemos la info rapida
     info = accion.fast_info
+    
+    
+    # Operaciones para sacar porcentaje, perdida o ganancia
     cambio_pct = ((info.last_price - info.previous_close) /
                   info.previous_close) * 100
     with columnas[i]:
@@ -34,6 +44,7 @@ st.subheader("Resumen últimos 3 meses")
 
 resumen = []
 
+# Ciclo para iterar sobre acciones
 for ticker in tickers:
     accion = yf.Ticker(ticker)
     historial = accion.history(period="3mo")
@@ -43,6 +54,7 @@ for ticker in tickers:
     precio_hace_3m = historial["Close"].iloc[0]
     rendimiento = ((precio_actual - precio_hace_3m) / precio_hace_3m) * 100
 
+    # Vamos agregando cada info de cada accion a resumen
     resumen.append({
         "Acción": ticker,
         "Precio actual": f"${precio_actual:.2f}",
@@ -52,6 +64,7 @@ for ticker in tickers:
         "Rendimiento 3m": f"{rendimiento:+.2f}%"
     })
 
+# Convertimos a dataframe
 df_resumen = pd.DataFrame(resumen)
 st.dataframe(df_resumen, use_container_width=True, hide_index=True)
 

@@ -3,6 +3,7 @@ import asyncio
 import requests
 import yfinance as yf
 import os
+from config import acciones_config, ligas_config
 from telegram import Bot
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -20,7 +21,11 @@ API = os.getenv("FOOTBALL_API_KEY")
 
 def obtener_acciones():
     # Las acciones que queremos, podrian agregarse mas si se requiere
-    tickers = ["BYDDY", "NFLX", "UNH"]
+    tickers = acciones_config
+    
+    #! Verificamos si hay acciones registradas
+    if not tickers:
+        return "📈 *Portafolio*\n\nNo hay acciones configuradas\n"
 
     # Obtenemos la fecha actual
     ahora = datetime.now().strftime("%d/%m/%Y %H:%M")
@@ -75,6 +80,10 @@ def obtener_partidos():
     for partido in data["matches"]:
         liga = partido["competition"]["name"]
 
+        # Si la liga no está en config, la ignoramos
+        if liga not in ligas_config:
+            continue
+
         # Si la liga no existe, la crea
         if liga not in ligas:
             ligas[liga] = []
@@ -97,12 +106,14 @@ def obtener_partidos():
             horario = horario - timedelta(hours=6)
             horario = horario.strftime('%I:%M %p')
             mensaje += (f"🏠 {partidos['local']} vs {partidos['visitante']}✈️  | {horario}\n")
+            
+    # Verificamos si hay partidos, si no hay entonces mandamos mensaje sad        
+    if not ligas:
+        mensaje = "😴 *Sin partidos hoy* — Disfruta el día libre\n"
 
     return mensaje
 
 # Creamos funcion para enviar el mensaje
-
-
 async def enviar_resumen():
 
     # Token de telegram

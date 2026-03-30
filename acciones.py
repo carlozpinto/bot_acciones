@@ -1,6 +1,7 @@
+# Importamos la libreria de Yahoo Finance
 import yfinance as yf
 
-# Tus 3 acciones
+# Mis 3 acciones
 tickers = ["BYDDY", "NFLX", "UNH"]
 
 for ticker in tickers:

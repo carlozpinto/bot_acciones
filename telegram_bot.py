@@ -3,7 +3,6 @@ import asyncio
 import requests
 import yfinance as yf
 import os
-from config import acciones_config, ligas_config
 from telegram import Bot
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -15,17 +14,20 @@ load_dotenv()
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = int(os.getenv("TELEGRAM_CHAT_ID"))
 API = os.getenv("FOOTBALL_API_KEY")
+acciones_config = os.getenv('ACCIONES_CONFIG')
 
 # Creamos la funcion para obtener las acciones
 
 
 def obtener_acciones():
-    # Las acciones que queremos, podrian agregarse mas si se requiere
-    tickers = acciones_config
-    
-    #! Verificamos si hay acciones registradas
-    if not tickers:
+
+    # Verificamos si la variable existe y no está vacía
+    if not acciones_config:
         return "📈 *Portafolio*\n\nNo hay acciones configuradas\n"
+    
+    # Convertimos el texto "TSLA,NFLX" en una lista ['TSLA', 'NFLX']
+    # .split(',') es el truco para que el bucle for funcione por palabra
+    tickers = [t.strip().upper() for t in acciones_config.split(',')]
 
     # Obtenemos la fecha actual
     ahora = datetime.now().strftime("%d/%m/%Y %H:%M")

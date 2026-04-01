@@ -72,23 +72,31 @@ Crea un archivo .env en la raíz con lo siguiente:
     FOOTBALL_API_KEY=tu_key_de_api_sports
     ACCIONES_CONFIG=BYDDY,NFLX,UNH
 
-🤖 Automatización (GitHub Actions)
-El bot está configurado para ejecutarse automáticamente todos los días (incluyendo fines de semana) a las 07:00 AM (Hora CDMX) mediante GitHub Actions.
+---
 
-Para que funcione en la nube, asegúrate de configurar los Secrets en tu repositorio (Settings > Secrets and variables > Actions):
+## 🤖 Automatización con GitHub Actions
 
-TELEGRAM_TOKEN
+El bot es **100% autónomo**. Se ejecuta automáticamente todos los días (incluyendo fines de semana) a las **07:00 AM (Hora CDMX)**.
 
-TELEGRAM_CHAT_ID
+### 🛡️ Configuración de Seguridad
+Para que el bot funcione en la nube sin exponer tus llaves privadas, utiliza los **GitHub Secrets**. Configúralos en:  
+`Settings` > `Secrets and variables` > `Actions` > `New repository secret`
 
-FOOTBALL_API_KEY
+| Secreto | Descripción |
+| :--- | :--- |
+| `TELEGRAM_TOKEN` | El Token proporcionado por @BotFather. |
+| `TELEGRAM_CHAT_ID` | Tu ID numérico de Telegram. |
+| `FOOTBALL_API_KEY` | Tu llave de API-Sports. |
+| `ACCIONES_CONFIG` | Los tickers a monitorear (Ej: `BYDDY, NFLX, UNH`). |
 
-ACCIONES_CONFIG
+---
 
-📊 Vista del Proyecto
-👤 Autor
-Carlos Pinto
+## 📊 Vista del Proyecto
 
-LinkedIn
+![Dashboard Preview](dashboard_preview.png)
 
-GitHub
+---
+
+## 👤 Autor
+
+**Carlos Pinto** ✨ [LinkedIn](https://www.linkedin.com/in/carlozpinto) | 🚀 [GitHub](https://github.com/carlozpinto)

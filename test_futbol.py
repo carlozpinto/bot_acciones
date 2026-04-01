@@ -1,55 +1,92 @@
-# Importamos las librerias a utilizar; REQUESTS para llamar APIS, OS para interactuar con el sistema operativo y DOTENV es para leer los tokens de .env
-import requests
 import os
+import requests
+import datetime
 from dotenv import load_dotenv
-from datetime import datetime, timedelta
 
-# Cargamos el .env
+# Cargar configuración local
 load_dotenv()
 
-# Agregamos la fecha actual
-ahora = datetime.now().strftime("%d/%m/%Y %H:%M")
+def obtener_reporte_dia_actual():
+    api_key = os.getenv('FOOTBALL_API_KEY')
+    url = "https://v3.football.api-sports.io/fixtures"
+    headers = {'x-apisports-key': api_key}
+    
+    # Capturamos la fecha exacta de HOY
+    hoy = datetime.date.today()
+    fecha_str = hoy.strftime('%Y-%m-%d')
+    
+    # Formatear título dinámico para el mensaje
+    fecha_titulo = hoy.strftime('%d/%m/%y')
+    
+    LIGAS_ELITE = [
+        {"n": "Liga MX", "p": "Mexico"},
+        {"n": "Liga MX Femenil", "p": "Mexico"},
+        {"n": "Liga de Expansión MX", "p": "Mexico"},
+        {"n": "Premier League", "p": "England"},
+        {"n": "La Liga", "p": "Spain"},
+        {"n": "Serie A", "p": "Italy"},
+        {"n": "Bundesliga", "p": "Germany"},
+        {"n": "Ligue 1", "p": "France"},
+        {"n": "UEFA Champions League", "p": "World"},
+        {"n": "UEFA Europa League", "p": "World"},
+        {"n": "CONCACAF Champions League", "p": "World"},
+        {"n": "CONMEBOL Libertadores", "p": "World"},
+        {"n": "Friendlies", "p": "World"}
+    ]
 
-# Agregamos la API de football-data.org
-API = os.getenv("FOOTBALL_API_KEY")
+    print(f"🏟️  **PARTIDOS DE HOY ({fecha_titulo})** 🏟️\n")
 
-# Hacemos la llamada a la API
-url = 'https://api.football-data.org/v4/matches'
-headers = {'X-Auth-Token': API}
+    params = {"date": fecha_str, "timezone": "America/Mexico_City"}
+    
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        data = response.json()
+        partidos = data.get('response', [])
+        
+        encontrados = 0
+        for p in partidos:
+            nombre_api = p['league']['name']
+            pais_api = p['league']['country']
+            
+            for liga in LIGAS_ELITE:
+                if nombre_api == liga["n"] and (pais_api == liga["p"] or liga["p"] == "World"):
+                    encontrados += 1
+                    
+                    # Limpieza de nombres
+                    local = p['teams']['home']['name'].replace(' W', '')
+                    visita = p['teams']['away']['name'].replace(' W', '')
+                    
+                    # Formato 12 Horas
+                    hora_24 = p['fixture']['date'].split('T')[1][:5]
+                    hora_obj = datetime.datetime.strptime(hora_24, "%H:%M")
+                    hora_12 = hora_obj.strftime("%I:%M %p")
+                    
+                    # Lógica de Marcador y Estado
+                    status = p['fixture']['status']['short']
+                    goles_l = p['goals']['home']
+                    goles_v = p['goals']['away']
 
-# Creamos una variable para guardar la respuesta de la API
-response = requests.get(url, headers=headers)
+                    if status == "NS": # No ha empezado
+                        st_icon = "⏰"
+                        info_partido = f"**{local}** vs **{visita}**"
+                    elif status in ["1H", "2H", "HT"]: # En vivo
+                        st_icon = "⚽ En vivo"
+                        info_partido = f"**{local}** {goles_l} - {goles_v} **{visita}**"
+                    elif status == "FT": # Finalizado
+                        st_icon = "🏁 Fin"
+                        info_partido = f"**{local}** {goles_l} - {goles_v} **{visita}**"
+                    else: # Otros (Cancelado, Postpuesto)
+                        st_icon = "⚠️"
+                        info_partido = f"**{local}** vs **{visita}** ({status})"
 
-# Convertimos la respuesta a json
-data = response.json()
+                    print(f"{st_icon} `{hora_12}` | {info_partido}")
+                    print(f"   _{nombre_api}_")
+        
+        if encontrados == 0:
+            print("⚽ Sin partidos relevantes para hoy.")
 
-# Imprimimos la fecha
-print(f"Los partidos de hoy {ahora} son: ")
+    except Exception as e:
+        print(f"❌ Error: {e}")
 
-# Creamos un diccionario vacio donde albergaremos las ligas
-ligas = {}
-
-# Bucle for para iterar sobre las ligas
-for partido in data["matches"]:
-    liga = partido["competition"]["name"]
-
-    # Si la liga no existe, la crea
-    if liga not in ligas:
-        ligas[liga] = []
-
-    # Agregamos el nombre del equipo local, visitante y fecha
-    ligas[liga].append({
-        "local": partido["homeTeam"]["name"],
-        "visitante": partido["awayTeam"]["name"],
-        "hora": partido["utcDate"]
-    })
-
-# Bucle para imprimir los partidos y horarios
-for clave, valor in ligas.items():
-    print(f"------------ {clave} ------------")
-    for partidos in valor:
-        horario = datetime.strptime(partidos['hora'], "%Y-%m-%dT%H:%M:%SZ")
-        horario = horario - timedelta(hours=6)
-        horario = horario.strftime('%I:%M %p')
-        print(
-            f"🏠 {partidos['local']} vs {partidos['visitante']}✈️  | {horario}")
+if __name__ == "__main__":
+    obtener_reporte_dia_actual()

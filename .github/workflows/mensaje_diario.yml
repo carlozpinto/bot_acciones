@@ -1,29 +1,32 @@
-name: Resumen diario de acciones
+name: Daily Summary Bot
 
 on:
   schedule:
-    - cron: '0 14 * * 1-5'  # 8:00 AM Mexico, lunes a domingo
-  workflow_dispatch:  # permite correrlo manualmente también
+    # Se ejecuta todos los días a las 13:00 UTC (07:00 AM hora CDMX)
+    - cron: '0 13 * * *'
+  workflow_dispatch: # Para que tú lo dispares cuando quieras probar
 
 jobs:
-  enviar_mensaje:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout código
+      - name: Checkout del código
         uses: actions/checkout@v3
 
-      - name: Instalar Python
+      - name: Configurar Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.9'
 
       - name: Instalar dependencias
-        run: pip install yfinance python-telegram-bot python-dotenv requests
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests yfinance python-telegram-bot python-dotenv
 
-      - name: Enviar resumen
+      - name: Ejecutar el Bot
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
           ACCIONES_CONFIG: ${{ secrets.ACCIONES_CONFIG }}
         run: python telegram_bot.py

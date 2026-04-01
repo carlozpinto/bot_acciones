@@ -125,7 +125,7 @@ El bot filtra automáticamente más de 400 partidos diarios para mostrar solo la
 
 1. **Clona el repositorio:**
    ```bash
-   git clone [https://github.com/carlozpinto/bot_acciones.git](https://github.com/carlozpinto/bot_acciones.git)
+   git clone (https://github.com/carlozpinto/bot_acciones.git)
 Crea y activa un entorno virtual:
 
 Bash

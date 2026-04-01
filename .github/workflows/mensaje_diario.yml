@@ -2,7 +2,7 @@ name: Resumen diario de acciones
 
 on:
   schedule:
-    - cron: '0 14 * * 1-7'  # 8:00 AM Mexico, lunes a domingo
+    - cron: '0 14 * * 1-5'  # 8:00 AM Mexico, lunes a domingo
   workflow_dispatch:  # permite correrlo manualmente también
 
 jobs:

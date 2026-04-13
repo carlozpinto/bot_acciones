@@ -155,7 +155,7 @@ def obtener_lol():
     url_lol = "https://api.pandascore.co/lol/matches/upcoming"
     
     # Obtenemos la hora actual UTC y calculamos 24 horas despues
-    ahora = datetime.datetime.now(datetime.UTC)
+    ahora = datetime.datetime.now(datetime.timezone.utc)
     fin = ahora + datetime.timedelta(hours=24)
     
     # Parametros del request - filtramos por rango de fechas y ordenamos por hora de inicio

@@ -120,6 +120,9 @@ def partidos_futbol():
 
 # --- FUNCIÓN: OBTENER PARTIDOS DE LOL ESPORTS ---
 def obtener_lol():
+    
+    print(f"DEBUG LOL_API_KEY: {'configurado' if LOL_API_KEY else 'VACÍO'}") 
+    
     # Si no hay token configurado, retornamos mensaje de advertencia
     if not LOL_API_KEY:
         return "🎮 *LoL Esports*\n\n⚠️ Token no configurado\n"

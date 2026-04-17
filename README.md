@@ -91,7 +91,7 @@ ACCIONES_CONFIG=BYDDY,NFLX,UNH
 
 ## 🤖 Automatización con GitHub Actions
 
-El bot es **100% autónomo**. Se ejecuta automáticamente de lunes a viernes a las **07:00 AM (Hora CDMX)**.
+El bot es **100% autónomo**. Se ejecuta automáticamente de lunes a viernes a las **08:00 AM (Hora CDMX)**.
 
 ### 🛡️ Configuración de Secrets
 

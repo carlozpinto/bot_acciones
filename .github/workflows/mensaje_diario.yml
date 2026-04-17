@@ -29,5 +29,5 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
           ACCIONES_CONFIG: ${{ secrets.ACCIONES_CONFIG }}
-          LOL_API_KEY: ${{ secrets.LOL_API_KEY }}
+          LOL_SPORTS_TOKEN: ${{ secrets.LOL_SPORTS_TOKEN }}
         run: python telegram_bot.py

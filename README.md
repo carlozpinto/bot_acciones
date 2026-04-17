@@ -79,7 +79,7 @@ pip install -r requirements.txt
 ```
 
 4. **Variables de Entorno (.env):**
-Copia `config.example.py` a `config.py` y edita tus preferencias. Luego crea un archivo `.env`:
+Crea un archivo `.env`:
 ```bash
 TELEGRAM_TOKEN=tu_token_de_botfather
 TELEGRAM_CHAT_ID=tu_id_de_usuario

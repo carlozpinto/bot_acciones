@@ -80,13 +80,13 @@ pip install -r requirements.txt
 
 4. **Variables de Entorno (.env):**
 Copia `config.example.py` a `config.py` y edita tus preferencias. Luego crea un archivo `.env`:
-
+```bash
 TELEGRAM_TOKEN=tu_token_de_botfather
 TELEGRAM_CHAT_ID=tu_id_de_usuario
 FOOTBALL_API_KEY=tu_key_de_api_sports
 LOL_SPORTS_TOKEN=tu_token_de_pandascore
 ACCIONES_CONFIG=BYDDY,NFLX,UNH
-
+```
 ---
 
 ## 🤖 Automatización con GitHub Actions
